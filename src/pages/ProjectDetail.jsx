@@ -3,8 +3,9 @@ import { useEffect } from 'react'
 import { PROJECTS, GRID_PROJECTS } from '../data'
 import Project from '../components/Project'
 import Cursor from '../components/Cursor'
+import Nav from '../components/Nav'
+import { PROJECT_LINKS } from '../navLinks'
 import { useReveal } from '../hooks'
-import cvUrl from '../assets/Valentinus_CV.pdf'
 import Visuals from '../components/Visuals'
 
 export default function ProjectDetail() {
@@ -28,11 +29,7 @@ export default function ProjectDetail() {
     return (
       <>
         <Cursor />
-        <nav className="nav">
-          <Link className="mark" to="/" data-cur="link">
-            Valentinus<span className="pt">.</span>
-          </Link>
-        </nav>
+        <Nav links={PROJECT_LINKS} brand="/" />
         <div className="not-found">
           Project not found.{' '}
           <Link to="/" data-cur="link">← Back to all work</Link>
@@ -46,19 +43,7 @@ export default function ProjectDetail() {
     const g = gridProject
 
     /* Shared nav */
-    const nav = (
-      <nav className="nav">
-        <Link className="mark" to="/" data-cur="link">
-          Valentinus<span className="pt">.</span>
-        </Link>
-        <div className="right">
-          <Link to="/" data-cur="link">← All Work</Link>
-          <a href="https://github.com/vjdarren" target="_blank" rel="noopener noreferrer" data-cur="link">GitHub ↗</a>
-          <a href="https://www.linkedin.com/in/valentinusjavierdarrensebastian/" target="_blank" rel="noopener noreferrer" data-cur="link">LinkedIn ↗</a>
-          <a href={cvUrl} target="_blank" rel="noopener noreferrer" data-cur="link">CV ↗</a>
-        </div>
-      </nav>
-    )
+    const nav = <Nav links={PROJECT_LINKS} brand="/" />
 
     /* Shared project header */
     const header = (
@@ -361,17 +346,7 @@ export default function ProjectDetail() {
     <>
       <Cursor />
 
-      <nav className="nav">
-        <Link className="mark" to="/" data-cur="link">
-          Valentinus<span className="pt">.</span>
-        </Link>
-        <div className="right">
-          <Link to="/" data-cur="link">← All Work</Link>
-          <a href="https://github.com/vjdarren" target="_blank" rel="noopener noreferrer" data-cur="link">GitHub ↗</a>
-          <a href="https://www.linkedin.com/in/valentinusjavierdarrensebastian/" target="_blank" rel="noopener noreferrer" data-cur="link">LinkedIn ↗</a>
-          <a href={cvUrl} target="_blank" rel="noopener noreferrer" data-cur="link">CV ↗</a>
-        </div>
-      </nav>
+      <Nav links={PROJECT_LINKS} brand="/" />
 
       <Project p={project} />
 

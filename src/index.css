@@ -26,17 +26,29 @@
   --pad: clamp(20px, 5vw, 90px);
   --gap: clamp(14px, 1.6vw, 26px);
   --measure: 68ch;                          /* comfortable prose line, ~72-78 chars */
+  --navh: 74px;                             /* remeasured from the real bar by Nav.jsx */
+}
+
+/* Landscape on a notched phone puts the display cutout over the gutter. */
+@supports (padding: max(0px)) {
+  :root {
+    --pad: max(clamp(20px, 5vw, 90px), env(safe-area-inset-left), env(safe-area-inset-right));
+  }
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* The bar is fixed : without this every #anchor lands underneath it. */
+  scroll-padding-top: calc(var(--navh) + 16px);
+  -webkit-text-size-adjust: 100%;
+}
 body {
   background: var(--alabaster);
   color: var(--offblack);
   font-family: var(--f-body);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
   cursor: none;
 }
 @media (pointer: coarse) {
@@ -112,6 +124,72 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 }
 .nav .right a:hover { color: var(--offblack); }
 
+/* ---------- Nav : mobile ---------- */
+.navtoggle { display: none; }
+.navsheet { display: none; }
+
+@media (max-width: 820px) {
+  .nav .right { display: none; }
+  .nav .mark, .navtoggle { position: relative; z-index: 1; }
+
+  /* A gradient alone lets body copy read straight through the wordmark as the
+     page moves. Once scrolled, lay real ground under the bar : as a fading
+     pseudo-element, because gradient -> colour is not an animatable step. */
+  .nav { padding: 12px var(--pad); }
+  .nav:before {
+    content: "";
+    position: absolute; inset: 0;
+    background: rgba(247, 247, 245, 0.9);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    opacity: 0; transition: opacity .25s ease;
+  }
+  .nav.is-scrolled:before { opacity: 1; }
+  .nav.is-open:before { opacity: 0; }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .nav:before { background: var(--alabaster); }
+  }
+
+  .navtoggle {
+    display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
+    gap: 7px; width: 44px; height: 44px;
+    background: none; border: 0; padding: 0;
+  }
+  .navtoggle .bar {
+    display: block; width: 26px; height: 2px; background: var(--offblack);
+    transition: transform .3s cubic-bezier(.16,1,.3,1);
+  }
+  .nav.is-open .navtoggle .bar:nth-child(1) { transform: translateY(4.5px) rotate(45deg); }
+  .nav.is-open .navtoggle .bar:nth-child(2) { transform: translateY(-4.5px) rotate(-45deg); }
+
+  .nav.is-open { background: var(--alabaster); }
+
+  .navsheet {
+    position: fixed; inset: 0;
+    background: var(--alabaster);
+    display: flex; flex-direction: column;
+    padding: calc(var(--navh) + 8px) var(--pad) 32px;
+    /* Six 56px rows do not fit a landscape phone : stay scrollable, and centre
+       via auto margins so overflow spills downward instead of clipping the top. */
+    overflow-y: auto; overscroll-behavior: contain;
+  }
+  .navsheet[hidden] { display: none; }
+  .navsheet a {
+    display: flex; align-items: center; min-height: 56px;
+    font-family: var(--f-display); font-weight: 500;
+    font-size: clamp(26px, 7.5vw, 44px); letter-spacing: -0.03em;
+    border-bottom: 1px solid var(--line);
+  }
+  .navsheet a:first-child { margin-top: auto; }
+  .navsheet a:last-child { border-bottom: 0; margin-bottom: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navtoggle .bar { transition: none; }
+  .nav:before { transition: none; }
+}
+
 /* ---------- Hero ---------- */
 .hero {
   padding-top: clamp(130px, 22vh, 260px);
@@ -128,7 +206,7 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 .hero h1 {
   grid-column: 1 / 13;
   font-family: var(--f-display); font-weight: 600;
-  font-size: clamp(70px, 16vw, 250px); line-height: 0.9; letter-spacing: -0.04em;
+  font-size: clamp(44px, 16vw, 250px); line-height: 0.9; letter-spacing: -0.04em;
 }
 .hero h1 .pt { color: var(--yellow); -webkit-text-stroke: 1.5px var(--soft); }
 .hero .sub {
@@ -165,6 +243,22 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 .hero .meta .row .v { color: var(--offblack); }
 @media (max-width: 820px) {
   .hero .sub, .hero .lede, .hero .meta { grid-column: 1 / 13; }
+
+  /* 22vh of lead-in burned most of a phone's first screen. Clear the bar, then
+     breathe : the eye should reach the name without scrolling. */
+  .hero {
+    padding-top: calc(var(--navh) + clamp(26px, 5vh, 56px));
+    padding-bottom: clamp(40px, 6vh, 80px);
+  }
+  /* At 12px/0.16em the strapline needed 374px and broke mid-phrase. */
+  .hero .tag {
+    align-items: flex-start; gap: 10px;
+    font-size: 11px; letter-spacing: 0.1em;
+    margin-bottom: clamp(20px, 3.5vh, 36px);
+  }
+  .hero .tag .dot { flex: none; margin-top: 5px; }
+  .hero .sub { margin-top: clamp(20px, 3vh, 34px); }
+  .hero .lede, .hero .meta { margin-top: clamp(24px, 3.5vh, 40px); }
 }
 
 /* ---------- Audience strip ---------- */
@@ -208,6 +302,16 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 }
 .sechead .ct { grid-column: 11 / 13; justify-self: end; font-family: var(--f-mono); font-size: 12px; color: var(--soft); }
 
+/* idx is 1/12th of the grid (~16px on a phone) and ct is 2/12ths - both far too
+   narrow for their text, which wrapped a character per line. Put the mono meta
+   on one row and give the title the full width beneath it. */
+@media (max-width: 820px) {
+  .sechead { align-items: center; }
+  .sechead .idx { grid-column: 1 / 7; grid-row: 1; }
+  .sechead .ct { grid-column: 7 / 13; grid-row: 1; justify-self: end; }
+  .sechead .ttl { grid-column: 1 / 13; grid-row: 2; margin-top: 10px; }
+}
+
 /* ---------- PROJECT : Anatomy ---------- */
 .project { padding-bottom: clamp(40px, 8vh, 90px); }
 .project .top {
@@ -225,6 +329,26 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
   grid-column: 9 / 13; justify-self: end; text-align: right;
   font-family: var(--f-serif); font-size: clamp(16px, 1.4vw, 22px); line-height: 1.2;
   color: var(--soft); max-width: 22ch; padding-bottom: 0.4em;
+}
+
+/* The 2/9 title column is ~165px on a phone while the display type wants 320px.
+   Stack the header and let the type scale with the viewport instead. */
+@media (max-width: 820px) {
+  /* 6vh of padding is ~50px on a phone against a ~68px bar : the project number
+     and name were landing behind the wordmark on load. */
+  .project .top {
+    align-items: start;
+    padding-top: calc(var(--navh) + clamp(20px, 3.5vh, 40px));
+  }
+  .project .top .num { grid-column: 1 / 13; margin-bottom: 6px; }
+  .project .top .name {
+    grid-column: 1 / 13;
+    font-size: clamp(34px, 11vw, 92px);
+  }
+  .project .top .kind {
+    grid-column: 1 / 13; justify-self: start; text-align: left;
+    max-width: var(--measure); padding-bottom: 0; margin-top: 12px;
+  }
 }
 
 /* progressive rows */
@@ -279,6 +403,8 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
   font-size: clamp(38px, 4.4vw, 66px); line-height: 0.9; letter-spacing: -0.02em;
 }
 .strategic .stats .s .c { font-size: 13px; color: var(--soft); margin-top: 8px; max-width: 22ch; }
+/* Stacked single-file on a phone, a 22ch caption is a needlessly ragged column. */
+@media (max-width: 820px) { .strategic .stats .s .c { max-width: 34ch; } }
 
 /* layer 2 : interface & friction (X-ray) */
 .interface .intro {
@@ -292,6 +418,12 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
   text-transform: uppercase; color: var(--soft);
   border: 1px solid var(--line-2); padding: 6px 11px;
   border-radius: 100px; margin-bottom: 20px;
+}
+/* "Hover" is a lie on a phone : the hint names whatever gesture actually works. */
+.xhint .on-touch { display: none; }
+@media (hover: none) {
+  .xhint .on-hover { display: none; }
+  .xhint .on-touch { display: inline; }
 }
 .xhint .pulse {
   width: 6px; height: 6px; border-radius: 50%; background: var(--yellow);
@@ -336,6 +468,16 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
   font-family: var(--f-mono);
 }
 .feat:hover .xray { opacity: 1; clip-path: inset(0 0 0 0); }
+
+/* Touch has no hover, so the whole "system beneath" layer was dead on a phone.
+   There, the card is a toggle instead : tap opens, tap again closes. Sticky
+   :hover after a tap is neutralised so the class is the only source of truth. */
+@media (hover: none) {
+  .feat:hover .xray { opacity: 0; clip-path: inset(0 0 100% 0); }
+  .feat.is-xray .xray,
+  .feat.is-xray:hover .xray { opacity: 1; clip-path: inset(0 0 0 0); }
+  .feat.is-xray { border-color: var(--offblack); }
+}
 .feat .xray .xtop {
   display: flex; justify-content: space-between; align-items: center;
   font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase;
@@ -381,7 +523,7 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 }
 .arctable .arhead .live { color: var(--xray-acc); }
 .arclinks {
-  display: flex; gap: 22px; padding: 16px clamp(18px, 2vw, 28px);
+  display: flex; flex-wrap: wrap; gap: 14px 22px; padding: 16px clamp(18px, 2vw, 28px);
   font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.06em;
   text-transform: uppercase; color: var(--xray-text);
   border-top: 1px solid #262623;
@@ -489,6 +631,11 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
   font-size: clamp(28px, 3.2vw, 48px); line-height: 0.9; letter-spacing: -0.02em;
 }
 .pcard .pstat .psc { font-size: 13px; color: var(--soft); max-width: 30ch; }
+/* .plink is pinned flush with .pstat's right edge, so a caption that wraps to a
+   third line runs straight under it once the card is narrow (two-up below about
+   1000px). Reserve the link's width : wider cards never reach this far anyway,
+   so nothing moves on a full desktop. */
+.pcard .pstat { padding-right: 112px; }
 .pcard .plink {
   position: absolute; bottom: clamp(24px, 3vw, 44px); right: clamp(24px, 3vw, 44px);
   font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.1em;
@@ -508,6 +655,17 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
   display: block; opacity: 0.88; transition: opacity .3s ease;
 }
 .pcard:hover .pimg img { opacity: 1; }
+
+/* Full width, the stat caption wraps to three lines and ran straight into the
+   pinned "Case study" link. Put the link back in the flow, and drop the
+   min-height that was padding short cards out with dead space.
+   (Must sit after the base .pcard rules : same specificity, source order wins.) */
+@media (max-width: 760px) {
+  .pcard { min-height: 0; }
+  .pcard .plink { position: static; margin-top: 20px; align-self: flex-start; }
+  .pcard .pstat { padding-right: 0; }
+  .pcard .pstat .psc { max-width: none; }
+}
 
 /* ---------- More Work : compact grid cards ---------- */
 .more-proj-grid {
@@ -532,6 +690,13 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 @media (max-width: 960px) {
   .more-proj-grid .gcard:nth-last-child(2):nth-child(3n+1),
   .more-proj-grid .gcard:nth-last-child(1):nth-child(3n+2) { grid-column: span 6; }
+}
+/* The orphan-centring selectors outrank the plain `.gcard { span 12 }` rule, so
+   without this the trailing row stayed two-up on a phone : two ~165px columns
+   with three or four words per line. */
+@media (max-width: 640px) {
+  .more-proj-grid .gcard:nth-last-child(2):nth-child(3n+1),
+  .more-proj-grid .gcard:nth-last-child(1):nth-child(3n+2) { grid-column: span 12; }
 }
 .gcard:hover { border-color: var(--offblack); }
 .gc-top {
@@ -595,9 +760,12 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 }
 .proj-nav a:hover .pn-label { color: var(--offblack); }
 .proj-nav a:hover .pn-name { color: var(--soft); }
+/* First/last case study renders an empty sibling : don't reserve space for it. */
+.proj-nav .pn-prev:empty, .proj-nav .pn-next:empty { display: none; }
 @media (max-width: 640px) {
   .proj-nav .pn-prev { grid-column: 1 / 13; }
   .proj-nav .pn-next { grid-column: 1 / 13; justify-self: start; text-align: left; margin-top: 24px; }
+  .proj-nav .pn-prev:empty + .pn-next { margin-top: 0; }
 }
 
 /* ---------- Not found ---------- */
@@ -683,6 +851,18 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 .about-meta .row .k { color: var(--soft); text-transform: uppercase; }
 .about-meta .row .v { color: var(--offblack); text-align: right; max-width: 55ch; }
 
+/* space-between lets a long value crush the label: "Outside work" was being
+   squeezed into 53px and wrapping onto 6 lines. Stack label over value instead. */
+@media (max-width: 820px) {
+  .hero .meta .row,
+  .about-meta .row {
+    flex-direction: column; align-items: flex-start; gap: 3px;
+  }
+  .about-meta .row .v { text-align: left; }
+  .hero .meta .row .k,
+  .about-meta .row .k { flex-shrink: 0; }
+}
+
 /* Education list */
 .edu-list { display: flex; flex-direction: column; gap: 0; margin-top: 4px; }
 .edu-item {
@@ -698,11 +878,10 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 .edu-dist {
   font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--yellow); -webkit-text-stroke: 0.3px var(--soft);
-  white-space: nowrap;
 }
-.edu-sub { display: flex; gap: 18px; }
+.edu-sub { display: flex; gap: 18px; flex-wrap: wrap; }
 .edu-inst { font-size: 14px; color: var(--soft); }
-.edu-year { font-family: var(--f-mono); font-size: 12px; color: var(--soft); margin-left: auto; }
+.edu-year { font-family: var(--f-mono); font-size: 12px; color: var(--soft); margin-left: auto; white-space: nowrap; }
 
 /* ---------- Experience section ---------- */
 .exp-sec { padding-bottom: clamp(20px, 4vh, 50px); }
@@ -900,6 +1079,10 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 }
 .img-slot.has-img:hover .zoom-hint,
 .img-slot.has-img:focus-visible .zoom-hint { opacity: 1; transform: translateY(0); }
+/* Nothing reveals it on touch, so the screenshots looked like flat images. */
+@media (hover: none) {
+  .zoom-hint { opacity: 1; transform: none; }
+}
 .img-slot.has-img:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 
 /* Lightbox */
@@ -917,6 +1100,8 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 }
 .lb-figure img {
   max-width: 100%; max-height: calc(100vh - 150px);
+  /* vh counts the mobile URL bar that isn't there : dvh is the visible box. */
+  max-height: calc(100dvh - 150px);
   object-fit: contain; display: block;
   border: 1px solid rgba(232, 232, 226, 0.14);
 }
@@ -934,6 +1119,24 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
   cursor: none; transition: background .25s ease, border-color .25s ease;
 }
 .lb-close:hover { background: rgba(232, 232, 226, 0.12); border-color: var(--xray-text); }
+
+/* Paging was arrow-keys only, i.e. desktop only. Touch gets swipe plus visible
+   controls; pointer users keep the uncluttered overlay they had. */
+.lb-nav { display: none; }
+@media (hover: none) {
+  /* Bottom corners, not the image edges : thumb-reachable, and the screenshot
+     stays uncovered. */
+  .lb-nav {
+    display: grid; place-items: center;
+    position: absolute; bottom: clamp(14px, 3vh, 30px);
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(19, 19, 18, 0.6); border: 1px solid rgba(232, 232, 226, 0.28);
+    color: var(--xray-text); font-size: 17px; line-height: 1;
+  }
+  .lb-nav.prev { left: clamp(14px, 4vw, 28px); }
+  .lb-nav.next { right: clamp(14px, 4vw, 28px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lightbox { animation: none; }
   .zoom-hint { transition: none; }
@@ -966,6 +1169,57 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
   .layer .lbody:not(:has(.vis-grid, .arctable, .features, .proc-steps, .stats, .role-resp)) {
     grid-column: 5 / 12;
   }
+  /* This outranks the plain `.layer .lbody { 1 / 13 }` mobile rule, so on a
+     phone every prose layer was rendering as a 55%-wide column indented a third
+     of the way across the screen. Restate it at matching specificity. */
+  @media (max-width: 820px) {
+    .layer .lbody:not(:has(.vis-grid, .arctable, .features, .proc-steps, .stats, .role-resp)) {
+      grid-column: 1 / 13;
+    }
+  }
 }
 .layer .lbody > .ref-card p, .proj-reflect .ref-card p { max-width: var(--measure); }
 .role-list li, .exp-bullets li { max-width: var(--measure); }
+
+/* ---------- Touch targets ----------
+   Discrete links only (nav wordmark, contact email, socials) - never inline
+   prose links, which must keep their natural line height. */
+@media (pointer: coarse) {
+  .nav .mark,
+  .contact .mail,
+  .socials a,
+  .arclinks a {
+    display: inline-flex; align-items: center; min-height: 44px;
+  }
+  /* The custom cursor is hidden on touch, so `cursor: none` on these left them
+     with no cursor at all under a hybrid pointer. */
+  .feat, .pcard, .gcard, .img-slot.has-img, .lb-close, .lb-nav { cursor: auto; }
+}
+
+/* ---------- Mobile section rhythm ----------
+   The desktop scale (12vh run-ups, 8vh tails, 7vh footer offsets) compounds to
+   170-230px of empty page between sections on a phone, where that is most of a
+   screen rather than a glance. Same proportions, phone-sized. */
+@media (max-width: 820px) {
+  /* 12vh of run-up above a heading reads as a hole on a phone, where the gap is
+     a whole thumb-scroll rather than a glance. `.about-sec`/`.exp-sec` restate
+     this later in the sheet at equal specificity, so the override has to live
+     here at the end to win. */
+  .sechead,
+  .about-sec .sechead,
+  .exp-sec .sechead {
+    padding-top: clamp(52px, 8vh, 88px);
+    padding-bottom: 6px;
+  }
+  .proj-grid, .more-proj-grid {
+    padding-bottom: clamp(28px, 5vh, 60px);
+    row-gap: 18px;
+  }
+  .contact {
+    padding-top: clamp(48px, 8vh, 88px);
+    padding-bottom: clamp(32px, 5vh, 60px);
+    margin-top: clamp(28px, 5vh, 60px);
+  }
+  .contact .base { margin-top: clamp(34px, 6vh, 64px); }
+  .exp-sec { padding-bottom: clamp(12px, 3vh, 32px); }
+}

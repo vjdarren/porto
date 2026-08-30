@@ -112,7 +112,12 @@ export default function Project({ p }) {
           </div>
           <div className="lbody">
             <span className="xhint rv">
-              <span className="pulse"></span> Hover a feature to X-ray the system beneath
+              <span className="pulse"></span>
+              <span>
+                <span className="on-hover">Hover</span>
+                <span className="on-touch">Tap</span>
+                {' '}a feature to X-ray the system beneath
+              </span>
             </span>
             <p className="intro rv" dangerouslySetInnerHTML={{ __html: p.interface.intro }} />
             <div className="features">

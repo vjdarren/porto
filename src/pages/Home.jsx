@@ -1,4 +1,5 @@
 import Cursor from '../components/Cursor'
+import Nav from '../components/Nav'
 import ProjectCard from '../components/ProjectCard'
 import GridCard from '../components/GridCard'
 import AboutSection from '../components/AboutSection'
@@ -16,19 +17,7 @@ export default function Home() {
       <Cursor />
 
       {/* Nav */}
-      <nav className="nav">
-        <a className="mark" href="#top" data-cur="link">
-          Valentinus<span className="pt">.</span>
-        </a>
-        <div className="right">
-          <a href="#about" data-cur="link">About</a>
-          <a href="#work" data-cur="link">Work</a>
-          <a href="#contact" data-cur="link">Contact</a>
-          <a href="https://github.com/vjdarren" target="_blank" rel="noopener noreferrer" data-cur="link">GitHub ↗</a>
-          <a href="https://www.linkedin.com/in/valentinusjavierdarrensebastian/" target="_blank" rel="noopener noreferrer" data-cur="link">LinkedIn ↗</a>
-          <a href={cvUrl} target="_blank" rel="noopener noreferrer" data-cur="link">CV ↗</a>
-        </div>
-      </nav>
+      <Nav />
 
       {/* Hero */}
       <header className="hero grid12" id="top">
