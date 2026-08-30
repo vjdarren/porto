@@ -2,13 +2,23 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { HOME_LINKS } from '../navLinks'
 
-/* `to` routes through react-router, `href` is a plain anchor. */
+/* `to` routes through react-router, `href` is a plain anchor. The arrows are
+   decorative and set in their own span so the mono face can render them. */
 function NavLink({ link, onClick }) {
   const extra = link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {}
+  const inner = (
+    <>
+      <span className="navlabel">
+        {link.lead && <><span className="ext" aria-hidden="true">{link.lead}</span>{' '}</>}
+        {link.label}
+      </span>
+      {link.external && <span className="ext trail" aria-hidden="true">↗</span>}
+    </>
+  )
   return link.to ? (
-    <Link to={link.to} data-cur="link" onClick={onClick}>{link.label}</Link>
+    <Link to={link.to} data-cur="link" onClick={onClick}>{inner}</Link>
   ) : (
-    <a href={link.href} data-cur="link" onClick={onClick} {...extra}>{link.label}</a>
+    <a href={link.href} data-cur="link" onClick={onClick} {...extra}>{inner}</a>
   )
 }
 

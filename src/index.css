@@ -124,6 +124,15 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 }
 .nav .right a:hover { color: var(--offblack); }
 
+/* Clash Display and Instrument Serif carry no arrow glyphs, so U+2197/U+2190
+   fell through to the colour-emoji font : a 1em emoji square sitting next to
+   the display type in the mobile sheet. JetBrains Mono has them, and it is
+   already what the desktop bar is set in, so pinning the arrows to it is what
+   makes the two views match. The gap reproduces the literal space it replaces:
+   0.6em mono advance + the bar's own 0.1em tracking. */
+.nav .ext { font-family: var(--f-mono); font-weight: 400; }
+.nav .ext.trail { margin-left: 0.7em; }
+
 /* ---------- Nav : mobile ---------- */
 .navtoggle { display: none; }
 .navsheet { display: none; }
@@ -176,11 +185,21 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
   }
   .navsheet[hidden] { display: none; }
   .navsheet a {
-    display: flex; align-items: center; min-height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; min-height: 56px;
     font-family: var(--f-display); font-weight: 500;
     font-size: clamp(26px, 7.5vw, 44px); letter-spacing: -0.03em;
     border-bottom: 1px solid var(--line);
   }
+  /* At display size a full-size arrow shouts; park it at the row's right edge
+     as a quiet affordance instead of a trailing character. */
+  .navsheet .ext.trail {
+    margin-left: 0; font-size: 15px; letter-spacing: 0.06em; color: var(--soft);
+  }
+  /* Same weight as the trailing arrows, with a real gap : at 0.5em against
+     33px display type the back-arrow read as a stray subscript mark. */
+  .navsheet .navlabel { display: inline-flex; align-items: center; gap: 12px; }
+  .navsheet .navlabel .ext { font-size: 15px; letter-spacing: 0.06em; color: var(--soft); }
   .navsheet a:first-child { margin-top: auto; }
   .navsheet a:last-child { border-bottom: 0; margin-bottom: auto; }
 }
