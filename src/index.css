@@ -113,6 +113,28 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
   padding: 20px var(--pad);
   background: linear-gradient(var(--alabaster), rgba(247,247,245,0));
 }
+
+/* A gradient alone lets body copy read straight through the wordmark as the
+   page moves. Once scrolled, lay real ground under the bar : as a fading
+   pseudo-element, because gradient -> colour is not an animatable step.
+   Every breakpoint needs this, not just the mobile sheet. */
+.nav:before {
+  content: "";
+  position: absolute; inset: 0;
+  background: rgba(247, 247, 245, 0.9);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  opacity: 0; transition: opacity .25s ease;
+}
+.nav.is-scrolled:before { opacity: 1; }
+.nav.is-open:before { opacity: 0; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav:before { background: var(--alabaster); }
+}
+/* The ground is absolutely positioned, so it paints above static in-flow
+   children : lift the bar's own content back over it. */
+.nav .mark, .nav .right, .navtoggle { position: relative; z-index: 1; }
 .nav .mark {
   font-family: var(--f-display); font-weight: 600; font-size: 21px; letter-spacing: -0.03em;
 }
@@ -139,26 +161,7 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 
 @media (max-width: 820px) {
   .nav .right { display: none; }
-  .nav .mark, .navtoggle { position: relative; z-index: 1; }
-
-  /* A gradient alone lets body copy read straight through the wordmark as the
-     page moves. Once scrolled, lay real ground under the bar : as a fading
-     pseudo-element, because gradient -> colour is not an animatable step. */
   .nav { padding: 12px var(--pad); }
-  .nav:before {
-    content: "";
-    position: absolute; inset: 0;
-    background: rgba(247, 247, 245, 0.9);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--line);
-    opacity: 0; transition: opacity .25s ease;
-  }
-  .nav.is-scrolled:before { opacity: 1; }
-  .nav.is-open:before { opacity: 0; }
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .nav:before { background: var(--alabaster); }
-  }
 
   .navtoggle {
     display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
@@ -391,7 +394,7 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
   display: flex; align-items: center; gap: 9px;
 }
 .layer .lhead .step .b { width: 18px; height: 1px; background: var(--soft); }
-.layer .lhead h4 {
+.layer .lhead h2 {
   font-family: var(--f-display); font-weight: 500;
   font-size: clamp(22px, 2vw, 30px); letter-spacing: -0.02em; line-height: 1.05;
 }
@@ -465,7 +468,7 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 }
 .feat:hover { border-color: var(--offblack); }
 .feat .fnum { font-family: var(--f-mono); font-size: 11px; color: var(--soft); letter-spacing: 0.1em; }
-.feat h5 {
+.feat h3 {
   font-family: var(--f-display); font-weight: 500;
   font-size: clamp(20px, 1.8vw, 27px); letter-spacing: -0.015em; margin-top: 14px; line-height: 1.08;
 }
@@ -791,6 +794,8 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 .not-found {
   padding: clamp(140px, 22vh, 220px) var(--pad) 100px;
   font-family: var(--f-mono); font-size: 13px; color: var(--soft);
+  /* It is the page's h1 : keep the heading default from bolding the line. */
+  font-weight: 400; letter-spacing: 0;
 }
 .not-found a { color: var(--offblack); }
 
@@ -1007,7 +1012,7 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 
 /* My Role block */
 .proj-role { padding-top: clamp(28px, 4vh, 52px); }
-.proj-role .lhead h4 {
+.proj-role .lhead h2 {
   font-family: var(--f-display); font-weight: 500;
   font-size: clamp(22px, 2vw, 30px); letter-spacing: -0.02em; line-height: 1.05;
 }

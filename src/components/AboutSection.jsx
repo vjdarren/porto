@@ -7,7 +7,7 @@ export default function AboutSection() {
       {/* Section header */}
       <div className="sechead grid12">
         <span className="idx rv">[ 01 ]</span>
-        <span className="ttl rv d1">About</span>
+        <h2 className="ttl rv d1">About</h2>
       </div>
 
       {/* Bio + meta */}

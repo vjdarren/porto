@@ -8,7 +8,7 @@ export default function Project({ p }) {
       {/* Project header */}
       <div className="top grid12">
         <span className="num rv">{p.num}</span>
-        <h3 className="name rv d1">{p.name}</h3>
+        <h1 className="name rv d1">{p.name}</h1>
         <div className="kind rv d2">{p.kind}</div>
       </div>
 
@@ -36,7 +36,7 @@ export default function Project({ p }) {
       <div className="proj-role grid12">
         <div className="lhead rv">
           <span className="step"><span className="b"></span> My Role</span>
-          <h4>{p.role.title}</h4>
+          <h2>{p.role.title}</h2>
         </div>
         <div className="lbody">
           <div className="role-resp rv d1">
@@ -65,7 +65,7 @@ export default function Project({ p }) {
         <div className="layer strategic grid12">
           <div className="lhead rv">
             <span className="step"><span className="b"></span> Layer 01</span>
-            <h4>Strategic Impact</h4>
+            <h2>Strategic Impact</h2>
             <span className="for">/ for the strategist</span>
           </div>
           <div className="lbody">
@@ -85,7 +85,7 @@ export default function Project({ p }) {
         <div className="layer process grid12">
           <div className="lhead rv">
             <span className="step"><span className="b"></span> Layer 02</span>
-            <h4>Process</h4>
+            <h2>Process</h2>
             <span className="for">/ how it was built</span>
           </div>
           <div className="lbody">
@@ -107,7 +107,7 @@ export default function Project({ p }) {
         <div className="layer interface grid12">
           <div className="lhead rv">
             <span className="step"><span className="b"></span> Layer 03</span>
-            <h4>Interface &amp; Friction</h4>
+            <h2>Interface &amp; Friction</h2>
             <span className="for">/ for the UX director</span>
           </div>
           <div className="lbody">
@@ -134,7 +134,7 @@ export default function Project({ p }) {
         <div className="layer visuals grid12">
           <div className="lhead rv">
             <span className="step"><span className="b"></span> Layer 04</span>
-            <h4>Visuals</h4>
+            <h2>Visuals</h2>
             <span className="for">/ screens &amp; frames</span>
           </div>
           <div className="lbody">
@@ -146,7 +146,7 @@ export default function Project({ p }) {
         <div className="layer architecture grid12">
           <div className="lhead rv">
             <span className="step"><span className="b"></span> Layer 05</span>
-            <h4>System Architecture</h4>
+            <h2>System Architecture</h2>
             <span className="for">/ for the engineering lead</span>
           </div>
           <div className="lbody rv d1">

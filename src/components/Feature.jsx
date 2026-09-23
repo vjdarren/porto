@@ -23,7 +23,7 @@ export default function Feature({ n, title, desc, ux, endpoints, note }) {
       }}
     >
       <span className="fnum">{n}</span>
-      <h5>{title}</h5>
+      <h3>{title}</h3>
       <p>{desc}</p>
       <div className="ux">
         <span className="ar">◇</span> {ux}

@@ -84,7 +84,7 @@ export default function Home() {
       {/* Work section header */}
       <div className="sechead grid12" id="work">
         <span className="idx rv">[ 04 ]</span>
-        <span className="ttl rv d1">Selected Work</span>
+        <h2 className="ttl rv d1">Selected Work</h2>
         <span className="ct rv d1">{PROJECTS.length} projects</span>
       </div>
 
@@ -98,7 +98,7 @@ export default function Home() {
       {/* More Work : grid cards */}
       <div className="sechead grid12">
         <span className="idx rv">[ 05 ]</span>
-        <span className="ttl rv d1">More Work</span>
+        <h2 className="ttl rv d1">More Work</h2>
         <span className="ct rv d1">{GRID_PROJECTS.length} projects</span>
       </div>
       <div className="more-proj-grid grid12">

@@ -4,8 +4,9 @@ import { PROJECTS, GRID_PROJECTS } from '../data'
 import Project from '../components/Project'
 import Cursor from '../components/Cursor'
 import Nav from '../components/Nav'
+import NotFound from './NotFound'
 import { PROJECT_LINKS } from '../navLinks'
-import { useReveal } from '../hooks'
+import { useReveal, useDocumentMeta } from '../hooks'
 import Visuals from '../components/Visuals'
 
 export default function ProjectDetail() {
@@ -20,23 +21,21 @@ export default function ProjectDetail() {
 
   useReveal()
 
+  /* Hooks run before the not-found return, so the call is unconditional. React
+     flushes child effects before the parent's, so NotFound's own title would be
+     overwritten by this one : own the miss case here rather than fight it. */
+  const found = project || gridProject
+  useDocumentMeta(
+    found ? found.name : 'Project not found',
+    project ? project.context.desc : gridProject ? gridProject.desc : undefined
+  )
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [slug])
 
   /* ── Not found ── */
-  if (!project && !gridProject) {
-    return (
-      <>
-        <Cursor />
-        <Nav links={PROJECT_LINKS} brand="/" />
-        <div className="not-found">
-          Project not found.{' '}
-          <Link to="/" data-cur="link">← Back to all work</Link>
-        </div>
-      </>
-    )
-  }
+  if (!found) return <NotFound what="Project" />
 
   /* ── Grid project : tier-aware detail views ── */
   if (gridProject) {
@@ -50,7 +49,7 @@ export default function ProjectDetail() {
       <>
         <div className="top grid12">
           <span className="num rv">{g.year}</span>
-          <h3 className="name rv d1">{g.name}</h3>
+          <h1 className="name rv d1">{g.name}</h1>
           <div className="kind rv d2">{g.subtitle}</div>
         </div>
         <div className="proj-ctx grid12 rv">
@@ -91,7 +90,7 @@ export default function ProjectDetail() {
             <div className="layer strategic grid12">
               <div className="lhead rv">
                 <span className="step"><span className="b"></span> Problem</span>
-                <h4>PROBLEM</h4>
+                <h2>PROBLEM</h2>
               </div>
               <div className="lbody">
                 <p className="lead rv d1">{g.problem}</p>
@@ -102,7 +101,7 @@ export default function ProjectDetail() {
             <div className="layer grid12">
               <div className="lhead rv">
                 <span className="step"><span className="b"></span> My Role</span>
-                <h4>{g.myRole.title}</h4>
+                <h2>{g.myRole.title}</h2>
               </div>
               <div className="lbody">
                 <div className="role-resp rv d1">
@@ -125,7 +124,7 @@ export default function ProjectDetail() {
             <div className="layer grid12">
               <div className="lhead rv">
                 <span className="step"><span className="b"></span> What I Built</span>
-                <h4>Deliverables shipped</h4>
+                <h2>Deliverables shipped</h2>
               </div>
               <div className="lbody rv d1">
                 <ul className="role-list">
@@ -138,7 +137,7 @@ export default function ProjectDetail() {
               <div className="layer visuals grid12">
                 <div className="lhead rv">
                   <span className="step"><span className="b"></span> Visuals</span>
-                  <h4>Screenshots</h4>
+                  <h2>Screenshots</h2>
                 </div>
                 <div className="lbody">
                   <Visuals items={g.visuals} />
@@ -149,7 +148,7 @@ export default function ProjectDetail() {
             <div className="layer grid12">
               <div className="lhead rv">
                 <span className="step"><span className="b"></span> Outcome</span>
-                <h4>Result</h4>
+                <h2>Result</h2>
               </div>
               <div className="lbody">
                 <div className="ref-card rv d1">
@@ -163,7 +162,7 @@ export default function ProjectDetail() {
               <div className="layer architecture grid12">
                 <div className="lhead rv">
                   <span className="step"><span className="b"></span> Stack</span>
-                  <h4>Technology Stack</h4>
+                  <h2>Technology Stack</h2>
                 </div>
                 <div className="lbody rv d1">
                   <div className="arctable">
@@ -207,7 +206,7 @@ export default function ProjectDetail() {
             <div className="layer strategic grid12">
               <div className="lhead rv">
                 <span className="step"><span className="b"></span> Problem</span>
-                <h4>What was being investigated</h4>
+                <h2>What was being investigated</h2>
               </div>
               <div className="lbody">
                 <p className="lead rv d1">{g.problem}</p>
@@ -217,7 +216,7 @@ export default function ProjectDetail() {
             <div className="layer grid12">
               <div className="lhead rv">
                 <span className="step"><span className="b"></span> Approach</span>
-                <h4>Methodology &amp; tools</h4>
+                <h2>Methodology &amp; tools</h2>
               </div>
               <div className="lbody">
                 <p className="proc-desc rv d1">{g.approach}</p>
@@ -227,7 +226,7 @@ export default function ProjectDetail() {
             <div className="layer grid12">
               <div className="lhead rv">
                 <span className="step"><span className="b"></span> Findings</span>
-                <h4>Results &amp; conclusions</h4>
+                <h2>Results &amp; conclusions</h2>
               </div>
               <div className="lbody">
                 <p className="proc-desc rv d1">{g.findings}</p>
@@ -238,7 +237,7 @@ export default function ProjectDetail() {
               <div className="layer visuals grid12">
                 <div className="lhead rv">
                   <span className="step"><span className="b"></span> Visuals</span>
-                  <h4>Output &amp; results</h4>
+                  <h2>Output &amp; results</h2>
                 </div>
                 <div className="lbody">
                   <Visuals items={g.visuals} />
@@ -250,7 +249,7 @@ export default function ProjectDetail() {
               <div className="layer architecture grid12">
                 <div className="lhead rv">
                   <span className="step"><span className="b"></span> Stack</span>
-                  <h4>Methods &amp; Tools</h4>
+                  <h2>Methods &amp; Tools</h2>
                 </div>
                 <div className="lbody rv d1">
                   <div className="arctable">
@@ -280,7 +279,7 @@ export default function ProjectDetail() {
             <div className="layer grid12">
               <div className="lhead rv">
                 <span className="step"><span className="b"></span> Reflection</span>
-                <h4>What I'd do differently</h4>
+                <h2>What I'd do differently</h2>
               </div>
               <div className="lbody">
                 <div className="ref-card rv d1">
@@ -305,7 +304,7 @@ export default function ProjectDetail() {
           <div className="layer strategic grid12">
             <div className="lhead rv">
               <span className="step"><span className="b"></span> Overview</span>
-              <h4>About this project</h4>
+              <h2>About this project</h2>
             </div>
             <div className="lbody">
               <p className="lead rv d1">{g.desc}</p>
@@ -315,7 +314,7 @@ export default function ProjectDetail() {
             <div className="layer architecture grid12">
               <div className="lhead rv">
                 <span className="step"><span className="b"></span> Stack</span>
-                <h4>Technology Stack</h4>
+                <h2>Technology Stack</h2>
               </div>
               <div className="lbody rv d1">
                 <div className="arctable">
