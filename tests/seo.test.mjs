@@ -80,3 +80,15 @@ test('host config: clean URLs, real 404s, CV kept out of the index', () => {
   const pdf = v.headers.find((h) => h.source === '/(.*)\\.pdf')
   assert.deepEqual(pdf.headers, [{ key: 'X-Robots-Tag', value: 'noindex' }])
 })
+
+test('every page links the icons, and favicon.ico carries 16, 32 and 48px', () => {
+  for (const p of [...pages().map((x) => fileFor(x.path)), '404.html']) {
+    const html = read(p)
+    assert.ok(html.includes('<link rel="icon" href="/favicon.ico" sizes="48x48" />'), `${p} favicon`)
+    assert.ok(html.includes('<link rel="apple-touch-icon" href="/apple-touch-icon.png" />'), `${p} apple-touch-icon`)
+  }
+  const ico = readFileSync(new URL('favicon.ico', dist))
+  assert.equal(ico.readUInt16LE(2), 1, 'ICO type')
+  const sizes = Array.from({ length: ico.readUInt16LE(4) }, (_, i) => ico[6 + i * 16] || 256)
+  assert.deepEqual(sizes, [16, 32, 48])
+})
