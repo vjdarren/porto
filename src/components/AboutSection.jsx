@@ -1,5 +1,5 @@
 import { PROFILE, EDUCATION } from '../data'
-import profilePic from '../assets/darrenfinal.webp'
+import { PROFILE_IMAGE } from '../seo'
 
 export default function AboutSection() {
   return (
@@ -13,7 +13,7 @@ export default function AboutSection() {
       {/* Bio + meta */}
       <div className="about-body grid12">
         <div className="lhead rv">
-          <img src={profilePic} alt="Profile" className="about-pfp" />
+          <img src={PROFILE_IMAGE} alt={PROFILE.name} className="about-pfp" />
           <span className="step"><span className="b"></span> Identity</span>
         </div>
         <div className="lbody">
@@ -53,6 +53,7 @@ export default function AboutSection() {
                   <span className="edu-degree">{e.degree}</span>
                   <span className="edu-dist">{e.distinction}</span>
                 </div>
+                {e.note && <span className="edu-note">{e.note}</span>}
                 <div className="edu-sub">
                   <span className="edu-inst">{e.institution}</span>
                   <span className="edu-year">{e.year}</span>

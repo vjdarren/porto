@@ -161,13 +161,15 @@ export default function Project({ p }) {
                   <span className="v" dangerouslySetInnerHTML={{ __html: r.v }} />
                 </div>
               ))}
-              <div className="arclinks">
-                {a.links.map((l) => (
-                  <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" data-cur="link">
-                    {l.label}<span className="u"></span>
-                  </a>
-                ))}
-              </div>
+              {a.links.length > 0 && (
+                <div className="arclinks">
+                  {a.links.map((l) => (
+                    <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" data-cur="link">
+                      {l.label}<span className="u"></span>
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

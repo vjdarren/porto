@@ -1,10 +1,11 @@
 import cvUrl from './assets/Valentinus_CV.pdf'
+import { PROFILE } from './data'
 
 /* Arrows live outside `label` so they can be set in the mono face: the display
    and serif families carry no arrow glyphs at all. See `.nav .ext` in index.css. */
 const SOCIALS = [
-  { label: 'GitHub', href: 'https://github.com/vjdarren', external: true },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/valentinusjavierdarrensebastian/', external: true },
+  { label: 'GitHub', href: PROFILE.github, external: true },
+  { label: 'LinkedIn', href: PROFILE.linkedin, external: true },
   { label: 'CV', href: cvUrl, external: true },
 ]
 

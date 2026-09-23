@@ -5,12 +5,19 @@ import GridCard from '../components/GridCard'
 import AboutSection from '../components/AboutSection'
 import ExperienceSection from '../components/ExperienceSection'
 import SkillsSection from '../components/SkillsSection'
-import { useReveal } from '../hooks'
-import { PROJECTS, GRID_PROJECTS } from '../data'
+import { useReveal, useDocumentMeta } from '../hooks'
+import { ALL_PROJECTS, FEATURED, PROFILE } from '../data'
+import { HOME_META } from '../seo'
 import cvUrl from '../assets/Valentinus_CV.pdf'
+
+/* Selected Work is chosen by slug, not by data shape: a full case study can
+   sit in More Work and a grid project can be featured. */
+const SELECTED = FEATURED.map((slug) => ALL_PROJECTS.find((p) => p.slug === slug))
+const MORE = ALL_PROJECTS.filter((p) => !FEATURED.includes(p.slug))
 
 export default function Home() {
   useReveal()
+  useDocumentMeta(HOME_META)
 
   return (
     <>
@@ -46,7 +53,7 @@ export default function Home() {
           </div>
           <div className="row">
             <span className="k">Status</span>
-            <span className="v">Open to roles in 2026</span>
+            <span className="v">Open to UK graduate roles</span>
           </div>
         </div>
       </header>
@@ -85,13 +92,13 @@ export default function Home() {
       <div className="sechead grid12" id="work">
         <span className="idx rv">[ 04 ]</span>
         <h2 className="ttl rv d1">Selected Work</h2>
-        <span className="ct rv d1">{PROJECTS.length} projects</span>
+        <span className="ct rv d1">{SELECTED.length} projects</span>
       </div>
 
       {/* Featured Project Grid */}
       <div className="proj-grid grid12">
-        {PROJECTS.map((p) => (
-          <ProjectCard key={p.num} p={p} />
+        {SELECTED.map((p, i) => (
+          <ProjectCard key={p.slug} p={p} num={String(i + 1).padStart(2, '0')} />
         ))}
       </div>
 
@@ -99,10 +106,10 @@ export default function Home() {
       <div className="sechead grid12">
         <span className="idx rv">[ 05 ]</span>
         <h2 className="ttl rv d1">More Work</h2>
-        <span className="ct rv d1">{GRID_PROJECTS.length} projects</span>
+        <span className="ct rv d1">{MORE.length} projects</span>
       </div>
       <div className="more-proj-grid grid12">
-        {GRID_PROJECTS.map((p) => (
+        {MORE.map((p) => (
           <GridCard key={p.slug} p={p} />
         ))}
       </div>
@@ -119,8 +126,8 @@ export default function Home() {
             darrensebastian@gmail.com
           </a>
           <div className="socials">
-            <a href="https://github.com/vjdarren" target="_blank" rel="noopener noreferrer" data-cur="link">GitHub</a>
-            <a href="https://www.linkedin.com/in/valentinusjavierdarrensebastian/" target="_blank" rel="noopener noreferrer" data-cur="link">LinkedIn</a>
+            <a href={PROFILE.github} target="_blank" rel="noopener noreferrer" data-cur="link">GitHub</a>
+            <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer" data-cur="link">LinkedIn</a>
             <a href={cvUrl} target="_blank" rel="noopener noreferrer" data-cur="link">Download CV</a>
           </div>
         </div>

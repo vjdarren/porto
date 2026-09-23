@@ -2,6 +2,19 @@
    VALENTINUS : ANATOMY OF A PROJECT
    Progressive-disclosure unified portfolio system
    ========================================================= */
+/* Self-hosted: the same families, weights and subsets the site loaded from
+   Fontshare and Google Fonts, without two render-blocking third-party
+   stylesheets. Satoshi is deliberately absent: the Fontshare request never
+   returned it, so body text has always rendered in the system sans. */
+@font-face { font-family: 'Clash Display'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/clash-display-500.woff2') format('woff2'); }
+@font-face { font-family: 'Clash Display'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/clash-display-600.woff2') format('woff2'); }
+@font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('/fonts/instrument-serif-italic-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('/fonts/instrument-serif-italic-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/instrument-serif-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/instrument-serif-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400 600; font-display: swap; src: url('/fonts/jetbrains-mono-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400 600; font-display: swap; src: url('/fonts/jetbrains-mono-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
 :root {
   --alabaster: #F7F7F5;
   --alabaster-2: #F1F1ED;
@@ -9,13 +22,14 @@
   --soft: #565654;
   --yellow: #F5D547;
   --yellow-cur: rgba(245, 213, 71, 0.88);   /* cursor fill : lets content read through */
+  --yellow-ink: #7E6807;                    /* gold for text : 5.06:1 on --alabaster (AA); --yellow stays for marks */
   --line: #E5E5E0;
   --line-2: #DAD9D2;
 
   /* X-ray / architecture mode */
   --xray-bg: #131312;
   --xray-text: #E8E8E2;
-  --xray-mute: #6F6F68;
+  --xray-mute: #878780;                     /* 5.14:1 on --xray-bg (AA for small text) */
   --xray-acc: #F5D547;
 
   --f-display: 'Clash Display', 'Instrument Serif', serif;
@@ -96,6 +110,13 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
   transition: opacity .9s ease, transform .9s cubic-bezier(.16,1,.3,1), filter .9s ease;
 }
 .rv.in { opacity: 1; transform: none; filter: blur(0); }
+/* The first screen is revealed by an inline script before its first style
+   pass (index.html); start it from the hidden state so it still fades in. */
+@media (prefers-reduced-motion: no-preference) {
+  @starting-style {
+    .rv.in { opacity: 0; transform: translateY(26px); filter: blur(10px); }
+  }
+}
 .rv.d1 { transition-delay: .08s; }
 .rv.d2 { transition-delay: .16s; }
 .rv.d3 { transition-delay: .24s; }
@@ -115,19 +136,22 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 }
 
 /* A gradient alone lets body copy read straight through the wordmark as the
-   page moves. Once scrolled, lay real ground under the bar : as a fading
-   pseudo-element, because gradient -> colour is not an animatable step.
-   Every breakpoint needs this, not just the mobile sheet. */
+   page moves. The ground is always on: gating it on the scroll listener left
+   a window after any jump (anchor, restored scroll, a hidden tab that has not
+   dispatched its scroll event yet) where text rendered through the bar while
+   the fade caught up. At the top nothing sits under the bar, so only the
+   hairline waits for scroll. Every breakpoint needs this, not just the
+   mobile sheet. */
 .nav:before {
   content: "";
   position: absolute; inset: 0;
   background: rgba(247, 247, 245, 0.9);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
-  opacity: 0; transition: opacity .25s ease;
+  border-bottom: 1px solid transparent;
+  transition: border-color .25s ease;
 }
-.nav.is-scrolled:before { opacity: 1; }
+.nav.is-scrolled:before { border-bottom-color: var(--line); }
 .nav.is-open:before { opacity: 0; }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .nav:before { background: var(--alabaster); }
@@ -303,7 +327,7 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 }
 .audience .col .who {
   font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--yellow); -webkit-text-stroke: 0.3px var(--soft);
+  text-transform: uppercase; color: var(--yellow-ink);
 }
 .audience .col .what {
   font-family: var(--f-serif); font-size: clamp(19px, 1.6vw, 24px); line-height: 1.2;
@@ -400,7 +424,7 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 }
 .layer .lhead .for {
   font-family: var(--f-mono); font-size: 11px;
-  color: var(--yellow); -webkit-text-stroke: 0.3px var(--soft); letter-spacing: 0.04em;
+  color: var(--yellow-ink); letter-spacing: 0.04em;
 }
 .layer .lbody { grid-column: 5 / 13; }
 @media (max-width: 820px) { .layer .lbody { grid-column: 1 / 13; } }
@@ -901,8 +925,10 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 }
 .edu-dist {
   font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--yellow); -webkit-text-stroke: 0.3px var(--soft);
+  text-transform: uppercase; color: var(--yellow-ink);
 }
+/* Most UK readers don't know the BTEC scale, so the grade carries a gloss. */
+.edu-note { font-size: 13px; color: var(--soft); }
 .edu-sub { display: flex; gap: 18px; flex-wrap: wrap; }
 .edu-inst { font-size: 14px; color: var(--soft); }
 .edu-year { font-family: var(--f-mono); font-size: 12px; color: var(--soft); margin-left: auto; white-space: nowrap; }
@@ -927,7 +953,7 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 }
 .exp-org {
   font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--yellow); -webkit-text-stroke: 0.3px var(--soft);
+  text-transform: uppercase; color: var(--yellow-ink);
 }
 .exp-dates {
   font-family: var(--f-mono); font-size: 12px; color: var(--soft); letter-spacing: 0.04em;
@@ -1045,7 +1071,7 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 .proc-step:last-child { border-bottom: 1px solid var(--line); }
 .proc-n {
   font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.12em;
-  color: var(--yellow); -webkit-text-stroke: 0.3px var(--soft);
+  color: var(--yellow-ink);
   min-width: 30px; padding-top: 3px;
 }
 .proc-body { display: flex; flex-direction: column; gap: 6px; }
@@ -1182,7 +1208,7 @@ body.cur-link .vcursor { width: 26px; height: 26px; background: var(--yellow-cur
 @media (max-width: 820px) { .ref-card { grid-column: span 12; } }
 .ref-label {
   font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--yellow); -webkit-text-stroke: 0.3px var(--soft);
+  text-transform: uppercase; color: var(--yellow-ink);
 }
 .ref-card p { font-size: 14.5px; color: var(--soft); line-height: 1.65; }
 

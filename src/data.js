@@ -6,7 +6,9 @@ export const PROFILE = {
   name: 'Valentinus Javier Darren Sebastian',
   bio: 'I\'m a computing graduate from the University of Greenwich, building at the intersection of product thinking and technical delivery. Originally from Indonesia, now based in London; I design and build software that is legible to every stakeholder in the room.',
   location: 'London, UK',
-  availability: 'Open to graduate roles, 2026',
+  linkedin: 'https://www.linkedin.com/in/valentinusjavier/',
+  github: 'https://github.com/vjdarren',
+  availability: 'Open to UK graduate roles',
   languages: 'Indonesian (Native) · English (Professional) · Mandarin Chinese (HSK 3) · Hokkien (Conversational)',
   context: 'When I\'m not shipping, I\'m coordinating professional events at Deloitte\'s community network, sketching interface ideas in Figma, or reading about decision systems and behavioural economics.',
 }
@@ -17,14 +19,15 @@ export const EDUCATION = [
     institution: 'University of Greenwich',
     location: 'London, UK',
     year: '2025 – 2026',
-    distinction: 'First Class (Predicted)',
+    distinction: 'First Class Honours · School Prize for Outstanding Undergraduate Achievement in Computing',
   },
   {
     degree: 'BTEC Higher National Diploma in Computing',
     institution: 'UniSadhuGuna International College',
     location: 'Tangerang, Indonesia',
     year: '2023 – 2025',
-    distinction: 'Summa Cum Laude · GPA 4.0 · Valedictorian & Best Graduate',
+    distinction: 'Distinction in all 15 units · Valedictorian & Best Graduate',
+    note: 'The maximum grade on the BTEC HND scale.',
   },
 ]
 
@@ -48,7 +51,7 @@ export const EXPERIENCE = [
     dates: '2025',
     location: 'Tangerang, Indonesia',
     bullets: [
-      'Built a real-time smart waste monitoring system using Arduino C++ and 3 ultrasonic sensors, automating bin capacity tracking and eliminating manual inspection cycles entirely',
+      'Built a real-time smart waste monitoring system using Arduino C++ and 2 ultrasonic sensors, automating bin capacity tracking and eliminating manual inspection cycles entirely',
       'Engineered threshold-based alert logic that replaced periodic manual checks with sub-second automated notifications',
       'Delivered as a working prototype, demonstrated live to municipal stakeholders',
     ],
@@ -77,7 +80,14 @@ export const SKILLS = [
 ]
 
 /* ---------------------------------------------------------
-   FEATURED PROJECTS, full case study data
+   SELECTED WORK, by slug from either array below. Everything
+   else falls through to the More Work grid.
+   --------------------------------------------------------- */
+
+export const FEATURED = ['toss', 'libra']
+
+/* ---------------------------------------------------------
+   FULL CASE STUDIES, layered case study data
    --------------------------------------------------------- */
 
 export const PROJECTS = [
@@ -85,38 +95,40 @@ export const PROJECTS = [
     num: '01',
     slug: 'toss',
     name: 'Toss',
+    subtitle: 'AI-Powered Food Waste Reduction Web App',
     kind: 'Final Year Project · University of Greenwich',
     context: {
       desc: 'AI web app that closes the gap between "I have ingredients" and "I know what to cook". Submitted as a core MVP inside a fixed 126-hour final year project timebox, then carried past the deadline into the deployed product running today',
-      type: 'Final Year Project · DSDM Agile · MVP shipped, then extended post-submission',
-      year: '2025',
+      type: 'Final Year Project · 29,000-word dissertation · DSDM Agile · MVP shipped, then extended post-submission',
+      year: '2026',
       team: 'Solo',
     },
     role: {
       title: 'Full-Stack Developer & Product Designer',
       responsibilities: [
-        'Sole developer and designer: system architecture through to pixel-level UI. Every Must and Should requirement shipped inside a fixed 126-hour DSDM timebox with no scope slip',
-        'Ran MoSCoW prioritisation across 6 timeboxes, turning the food waste problem into a backlog with measurable acceptance criteria, and deliberately deferred 2 Won’t features rather than let scope drift',
+        'Sole developer and designer: system architecture through to pixel-level UI. Every Must and Should requirement shipped inside a fixed 126-hour DSDM timebox, with scope held to that agreed set',
+        'Ran MoSCoW prioritisation across 6 timeboxes, turning the food waste problem into a backlog with measurable acceptance criteria, with 2 features agreed as Won’t at the outset and held there rather than letting scope drift',
         'Evaluated the build against Nielsen’s 10 usability heuristics and benchmarked against 2 established recipe apps, then kept going after submission, rebuilding both the input and recommendation models in response to what that evaluation exposed',
       ],
       decisions: [
         'Ranked by expiry rather than keyword relevance; the product had to act on the decision to cook, not the recipe lookup, so the ingredient closest to spoiling drives everything downstream',
         'Shipped a single recommendation in the MVP to kill choice paralysis, then replaced it after evaluation showed the opposite failure: with nothing to compare against, one suggestion reads as arbitrary rather than confident. The deployed product offers three, each pre-assigned a role, so the user picks a posture instead of auditing a list',
         'Collapsed structured ingredient entry into one natural-language field backed by voice and camera capture: the cost of telling the system what you have, not the size of the recipe corpus, was what stood between a full fridge and a decision',
+        'Chose Google Gemini over OpenAI on cost, latency and API stability, holding generation under 1.8 seconds so the recommendation arrived while the user was still standing at the fridge',
       ],
     },
     strategic: {
-      lead: 'UK households waste £730 worth of food per year, not because they buy too much, but because they can\'t decide what to make with what they already have. Toss attacks the decision gap, not the shopping list.',
+      lead: 'A UK household of four throws away food worth around £1,000 a year (WRAP, 2025), not because they buy too much, but because they can\'t decide what to make with what they already have. Toss attacks the decision gap, not the shopping list.',
       stats: [
-        { n: '126h', c: 'Full product delivered within fixed DSDM timebox: all Must and Should requirements shipped, 2 Won\'t features deferred by design' },
-        { n: '6', c: 'MoSCoW-managed timeboxes: zero requirement scope creep across the full development cycle' },
+        { n: '13', c: 'Functional requirements with measurable acceptance criteria, delivered across 6 DSDM timeboxes inside a tracked 126-hour build budget' },
+        { n: '6', c: 'MoSCoW-managed timeboxes, with scope held to the agreed Must and Should set' },
         { n: '3', c: 'Ranked suggestions per session, each pre-assigned a role (most urgent, balanced, stretch) so the choice stays bounded' },
       ],
     },
     process: [
-      { n: '01', title: 'Discover', desc: 'Framed the problem as decision friction rather than recipe discovery, through competitive benchmarking against 2 established recipe apps and structured user interviews. The gap was never a lack of recipes; it was the moment of standing at an open fridge with no answer' },
+      { n: '01', title: 'Discover', desc: 'Framed the problem as decision friction rather than recipe discovery, through competitive benchmarking against 2 established recipe apps and informal conversations with prospective users. The gap was never a lack of recipes; it was the moment of standing at an open fridge with no answer' },
       { n: '02', title: 'Define', desc: 'Applied MoSCoW across ingredient capture, recommendation output and expiry ranking as the algorithm’s primary sort key. Wrote functional and non-functional requirements with measurable acceptance criteria so "done" was arguable against evidence, not taste' },
-      { n: '03', title: 'Build', desc: '6 DSDM timeboxes inside a fixed 126-hour window. All Must and Should requirements shipped on schedule; 2 Won’t features deferred as a deliberate product call, not a missed deadline' },
+      { n: '03', title: 'Build', desc: '6 DSDM timeboxes inside a fixed 126-hour window. All Must and Should requirements shipped on schedule, with 2 features agreed as Won’t at the outset and held there as a deliberate product call' },
       { n: '04', title: 'Validate', desc: 'Evaluated against Nielsen’s 10 usability heuristics. The most useful finding worked against my own design: a single recommendation did remove choice paralysis, but with nothing to compare it to, users had no way to judge whether the system had actually understood them' },
       { n: '05', title: 'Extend', desc: 'Carried the product past the submission deadline and acted on that finding. Rebuilt the output as three role-labelled options, collapsed ingredient capture into a single natural-language field with voice and photo input, and added an explicit transparency layer' },
       { n: '06', title: 'Ship', desc: 'Deployed to production and still live. The MVP proved the thesis under a hard constraint; the deployed version is what the evaluation said it needed to become' },
@@ -179,12 +191,12 @@ export const PROJECTS = [
         { k: 'Methodology', v: '<span class="tk">DSDM</span> · 6 timeboxes · <span class="tk">MoSCoW</span> · 126h fixed window' },
       ],
       links: [
-        { label: 'Source ↗', href: 'https://github.com/vjdarren' },
+        { label: 'Source ↗', href: 'https://github.com/vjdarren/toss-recipe-app' },
         { label: 'Live Demo ↗', href: 'https://toss-psi.vercel.app/' },
       ],
     },
     reflection: {
-      worked: 'The DSDM timebox did more for the product than for the schedule. A hard 126 hours forced MoSCoW to be honest, and deferring 2 Won’t features was cheaper than half-building them. The expiry-first ranking was the right core bet; it survived every later rewrite untouched.',
+      worked: 'The DSDM timebox did more for the product than for the schedule. A hard 126 hours forced MoSCoW to be honest: 2 features agreed as Won’t at the outset and held there cost less than half-building them would have. The expiry-first ranking was the right core bet; it survived every later rewrite untouched.',
       differently: 'I built before I validated. All of the input handling was finished before I had evidence about what capture actually cost people, and the recommendation model was settled before heuristic evaluation told me a lone suggestion reads as arbitrary. Both findings arrived late enough that acting on them meant rebuilding after submission rather than iterating inside a timebox. I would now spend an early timebox on evaluation and treat its output as a requirement.',
       next: 'Mobile-first rebuild with a shared household pantry, so the person who buys the food and the person who cooks it are looking at the same list. Impact tracking that reports items rescued and spend recovered per week; the product currently asks users to take the food waste benefit on faith. Longer term, supermarket loyalty integration to seed the pantry automatically and remove the last of the input cost.',
     },
@@ -194,6 +206,10 @@ export const PROJECTS = [
     slug: 'bookaro',
     name: 'Bookaro',
     kind: 'HCI Coursework · University of Greenwich',
+    /* Grid card fields: Bookaro sits in More Work */
+    subtitle: 'Gamified Reading App for Children, HCI Design',
+    stack: ['Axure RP 11'],
+    metric: '6 peer-reviewed papers · 9-screen Axure RP 11 prototype · Norman\'s 5 principles applied',
     context: {
       desc: 'Evidence-based HCI design of a gamified reading app for children aged 6–10 that turns reading into an interactive quest using progress tracking, mascot feedback, and reward-based challenges',
       type: 'Academic · COMP1649 Human-Computer Interaction',
@@ -270,9 +286,7 @@ export const PROJECTS = [
         { k: 'Evidence Base', v: '6 peer-reviewed papers: Li & Chu (2020), Wang et al. (2024), Schiele et al. (2024), Liu et al. (2024), Bai et al. (2022), Chen (2022)' },
         { k: 'Proposed Study', v: '<span class="tk">A/B mixed-methods</span> · 6–10 participants aged 6–10 · ACTIF framework · emoji Likert scales + structured interview' },
       ],
-      links: [
-        { label: 'Axure Prototype ↗', href: '#' },
-      ],
+      links: [],
     },
     reflection: {
       worked: 'Grounding every design decision in literature made iteration faster and more defensible. When a choice was questioned during peer review, I could cite a specific paper rather than intuition. The 5-frame storyboard proved its value: defining the emotional arc before prototyping prevented the common trap of designing for function before feeling.',
@@ -290,43 +304,32 @@ export const GRID_PROJECTS = [
   {
     slug: 'keraton',
     name: 'Keraton',
-    subtitle: 'Royal Heritage Visitor Application',
+    subtitle: 'Royal Heritage Visitor App, Design and Prototype',
     year: '2024',
     typeTag: 'Academic · Best Application Development Project · UIC College',
     tier: 2,
-    stack: ['Flutter', 'Node.js', 'Express.js', 'REST API', 'Agile'],
-    desc: 'Full mobile app for Keraton Yogyakarta, one of Indonesia\'s most significant royal heritage sites. Covers user authentication, news module, event calendar with save and share, QR-code ticketing (domestic/foreign/adult/child), and profile management. UAT conducted with Keraton team representatives across multiple devices.',
-    metric: 'Passed full UAT · 5 core modules shipped · Best Application Development Project',
-    problem: 'Keraton Yogyakarta receives thousands of local and international visitors each year: yet its information systems ran on printed materials, manual ticketing, and limited digital presence. Keraton is the digital bridge between one of Indonesia\'s most significant royal heritage sites and the modern visitor.',
-    overview: 'A full cross-platform mobile application built in Flutter with a Node.js/Express backend. Covers the complete visitor journey: secure account creation, a live news and updates feed, a detailed event calendar with save-and-share, QR-code entry ticketing (domestic/foreign, adult/child categorisation), and a personalised profile. User Acceptance Testing conducted with Keraton team representatives across multiple devices. Delivered using Agile methodology with 2-week sprint cycles.',
+    stack: ['Figma', 'React Native'],
+    desc: 'Visitor app design for Keraton Yogyakarta, one of Indonesia\'s most significant royal heritage sites: a high-fidelity Figma design across five screens (Home, News, Events, Tickets and Support), plus a React Native prototype built against mock data to test the navigation model.',
+    metric: '5-screen high-fidelity design · Best Application Development Project',
+    problem: 'Keraton Yogyakarta receives thousands of local and international visitors a year, with information and ticketing still running on printed material and manual processes. The brief was to design what a visitor-facing mobile app for the site should be.',
     myRole: {
-      title: 'Lead Developer & Requirements Analyst',
+      title: 'UI/UX Designer and Prototype Developer',
       bullets: [
-        'Authored the full Software Design Document including functional requirements, non-functional requirements, and risk/mitigation register',
-        'Built the complete Flutter application across 5 modules with Node.js/Express RESTful backend; user authentication, content management, event scheduling, QR-based ticketing, and profile management',
-        'Conducted User Acceptance Testing with Keraton team representatives across smartphones and tablets; iterated on UI design based on structured feedback before final delivery',
+        'A high-fidelity mobile design in Figma covering five screens: Home, News, Events, Tickets and Support, including domestic and foreign pricing tiers and adult and child categorisation in the ticketing flow',
+        'A React Native prototype implementing the five screen structures against mock data, built to test the navigation model rather than to ship',
       ],
       decisions: [
-        'Chose Flutter over React Native after benchmarking both for UI-intensive feature performance. Flutter\'s widget system was better suited for the custom cultural aesthetic required',
-        'Implemented QR-code ticketing with domestic/foreign and adult/child categorisation to address the specific inefficiencies Keraton stakeholders identified in manual ticketing processes',
+        'Design decisions balanced the cultural identity of the institution against standard mobile UX conventions, which was the central tension in the brief',
       ],
     },
-    whatBuilt: [
-      'User authentication: secure sign-up/login, JWT-based session management, profile editing',
-      'News module, real-time articles from Keraton team with save-to-personal-list and share functionality',
-      'Event calendar: full event listings with descriptions, dates, highlight images, and user save/share',
-      'Ticketing system: QR-code entry with domestic/foreign pricing, adult/child categorisation, and "My Tickets" purchase history',
-      'Support & settings: FAQ, Contact Us form, notification preferences, language settings',
-    ],
-    outcome: 'Passed full UAT with Keraton team representatives, all 5 core modules signed off across multiple device types',
+    outcome: 'Best Application Development Project, UIC College, 2024',
     manifestRows: [
-      { k: 'Platform', v: '<span class="tk">Flutter</span>, cross-platform iOS/Android' },
-      { k: 'Backend', v: '<span class="tk">Node.js</span> · <span class="tk">Express.js</span> · RESTful API' },
-      { k: 'Methodology', v: '<span class="tk">Agile</span> · 2-week sprints · peer review · UAT' },
-      { k: 'Outcome', v: 'Passed full UAT · Best Application Development Project' },
+      { k: 'Design', v: '<span class="tk">Figma</span>, high-fidelity, 5 screens' },
+      { k: 'Prototype', v: '<span class="tk">React Native</span>, screen structure against mock data' },
+      { k: 'Scope', v: 'Design and prototype. Not a production build.' },
     ],
     visuals: [
-      { label: 'Welcome screen', alt: 'Keraton app welcome screen running on iOS, full-bleed photography of the palace gate guardian statue behind a card carrying the wordmark, tagline and the sign-up / log-in entry points', src: '/projects/keraton/welcome-screen.webp' },
+      { label: 'Welcome screen, Figma', alt: 'Welcome screen from the Keraton Figma design: full-bleed photography of the palace gate guardian statue behind a card carrying the wordmark, tagline and sign-up and log-in buttons', src: '/projects/keraton/welcome-screen.webp' },
     ],
   },
   {
@@ -337,16 +340,16 @@ export const GRID_PROJECTS = [
     typeTag: 'Academic · Real Client (JejakBaduy Travel Agency · Best Website Dev) UIC College',
     tier: 2,
     stack: ['HTML5', 'CSS3', 'Bootstrap', 'JavaScript', 'PHP', 'MySQL'],
-    desc: 'Full website for a real Baduy cultural tourism travel agency, 10 pages including a custom PHP/MySQL CMS for the client to update content independently. Load tested at 20 concurrent users. SEO implementation across all pages.',
-    metric: '420ms avg load under 20-user load · Real client delivery · Best Website Development Project',
+    desc: 'Full website for a real Baduy cultural tourism travel agency, 10 pages including a custom PHP/MySQL CMS for the client to update content independently. SEO implementation across all pages.',
+    metric: '90/100 Lighthouse accessibility · Real client delivery · Best Website Development Project',
     problem: 'JejakBaduy is a travel agency specialising in immersive tours to the Baduy region, one of Indonesia\'s most preserved cultural areas. The brief: build a website that captures that cultural gravity while giving the agency full control over their own content.',
-    overview: 'A complete multi-page website built from scratch for a real client. 10 pages covering the full visitor journey: home, trip packages (private and public, 1-day and 2-day), package details, About Baduy cultural context, About Us, gallery, blog, and contact. Includes a fully custom PHP/MySQL CMS enabling the client to manage all content independently. SEO implementation across all pages. Load tested at 20 concurrent users with 420ms average load time. Responsive design via Bootstrap across mobile, tablet, and desktop.',
+    overview: 'A complete multi-page website built from scratch for a real client. 10 pages covering the full visitor journey: home, trip packages (private and public, 1-day and 2-day), package details, About Baduy cultural context, About Us, gallery, blog, and contact. Includes a fully custom PHP/MySQL CMS enabling the client to manage all content independently. SEO implementation across all pages. Responsive design via Bootstrap across mobile, tablet, and desktop.',
     myRole: {
       title: 'Full-Stack Web Developer & UI Designer',
       bullets: [
         'Designed the complete site architecture across 10 pages, creating wireframes and high-fidelity mockups before development, validating layout and visual identity against the cultural brief',
         'Built the full front-end using HTML5, CSS3, Bootstrap, and JavaScript; implemented the back-end using PHP and MySQL with a custom-built CMS enabling the client to manage all content without developer involvement',
-        'Implemented SEO best practices across all pages and conducted performance testing under concurrent load, achieving 420ms average load time with zero server crashes',
+        'Implemented SEO best practices across all pages and audited accessibility with Lighthouse, scoring 90/100',
       ],
       decisions: [
         'Built a custom CMS over using a third-party platform to give the client a lightweight, purpose-built interface matching their specific content types, without the overhead of a general-purpose CMS',
@@ -362,13 +365,13 @@ export const GRID_PROJECTS = [
       'Blog, article publishing with CMS integration',
       'Custom CMS: admin login (PHP session-secured), content management for all pages, session timeout and injection protection',
     ],
-    outcome: '420ms average load time under 20-user concurrent load, delivered to real client with full CMS handover',
+    outcome: '90/100 Lighthouse accessibility, delivered to real client with full CMS handover',
     manifestRows: [
       { k: 'Frontend', v: '<span class="tk">HTML5</span> · <span class="tk">CSS3</span> · <span class="tk">Bootstrap</span> · <span class="tk">JavaScript</span>' },
       { k: 'Backend', v: '<span class="tk">PHP</span> · <span class="tk">MySQL</span>' },
       { k: 'CMS', v: 'Custom-built PHP/MySQL admin panel with session security' },
       { k: 'SEO', v: 'Meta descriptions · keyword tags · image alt text' },
-      { k: 'Testing', v: 'Load testing, 20 concurrent users · 420ms avg response' },
+      { k: 'Testing', v: 'Lighthouse accessibility audit · 90/100 (Lighthouse 12.8, September 2026)' },
       { k: 'Outcome', v: 'Best Website Development Project · Real client delivery' },
     ],
     manifestLinks: [
@@ -381,7 +384,7 @@ export const GRID_PROJECTS = [
       { label: 'About Baduy', alt: 'Cultural context page: visitor rules presented as a two-column do/don’t checklist, followed by an editorial section on Baduy customs and ritual', src: '/projects/jejakbaduy/about-baduy.webp' },
       { label: 'Photo gallery', alt: 'Gallery page, responsive masonry grid of trip photography with lightbox viewing', src: '/projects/jejakbaduy/gallery.webp' },
       { label: 'Responsive layout', alt: 'The homepage rendered at iPhone 14 Pro Max width in device emulation, showing the Bootstrap breakpoint behaviour and collapsed navigation', src: '/projects/jejakbaduy/responsive.webp' },
-      { label: 'Load test results', alt: 'JMeter load test output, 20 concurrent simulated users against the live homepage, reporting per-user click times and an aggregate time-spent figure with a 0.00% error rate', src: '/projects/jejakbaduy/load-test.webp' },
+      { label: 'Load test results', alt: 'Load test report from a local development server: 20 simulated users each requesting the homepage once, with per-user click times and a 0.00% error rate', src: '/projects/jejakbaduy/load-test.webp' },
     ],
   },
   {
@@ -390,11 +393,13 @@ export const GRID_PROJECTS = [
     subtitle: 'Requirements Analysis of a £390M Government IT Failure',
     year: '2025–2026',
     typeTag: 'Academic · COMP1787 Requirements Management',
+    /* Selected Work card stat */
+    cardStat: { n: '£244M', c: 'Overrun on a £146M bid, traced to requirements failure rather than technology' },
     tier: 3,
     stack: [],
     desc: 'Critical analysis of the Libra magistrates\' courts IT project, £146M bid, £390M actual cost. Root cause analysis, MoSCoW requirements written from scratch, stakeholder mapping, and JAD + DSDM proposed as alternatives.',
     metric: '£244M cost overrun analysed · MoSCoW requirements framework applied · JAD + DSDM proposed as remedies',
-    problem: 'The Libra magistrates\' courts IT project is one of the most extensively documented government IT failures in UK history, a £146M bid that became a £390M liability. The Committee of Public Accounts described it as among the worst PFI projects ever seen. The root cause wasn\'t technology. It was requirements.',
+    problem: 'The Libra magistrates\' courts IT project is one of the most extensively documented government IT failures in UK history, a £146M bid that became a £390M liability. The Committee of Public Accounts called it "one of the worst PFI deals that we have seen" (New IT systems for Magistrates\' Courts: the Libra project, 44th Report of Session 2002–03, HC 434). The root cause wasn\'t technology. It was requirements.',
     approach: 'Analysed primary sources including the National Audit Office and Public Accounts Committee reports to establish the factual timeline and decision chain. Applied requirements engineering frameworks to diagnose failure at each phase: procurement commitment before requirements validation, single-bidder lock-in, and scope instability under fixed-price contract. Wrote a complete alternative requirements specification from scratch. MoSCoW-prioritised functional requirements with per-requirement rationale drawn from real stakeholder perspectives (Legal Adviser, Finance Officer, Court Manager, Policy Official), and scalability-focused non-functional requirements. JAD workshops and DSDM iterative delivery evaluated as the structural remedies that would have prevented the overrun.',
     findings: 'The root cause was committing to a fixed-price, single-bidder procurement contract before redesigning business processes or validating user needs structurally. Scope instability and contractual lock-in were the inevitable result. JAD workshops across representative court types (bringing business users, IT professionals, and decision-makers together before procurement) would have surfaced the operational diversity that made a one-size-fits-all system impossible. DSDM iterative delivery governance would have provided structured checkpoints to catch scope drift before it became irreversible. Staff distrust of formal systems was a known social risk that was never addressed in the requirements process.',
     reflection: 'This analysis sharpened what requirements engineering actually protects against, not just technical ambiguity, but organisational, social, and procurement risk. A £244M overrun is the cost of skipping stakeholder alignment.',
@@ -470,9 +475,6 @@ export const GRID_PROJECTS = [
       { k: 'Dataset', v: 'AB_NYC_2019: 48,895 Airbnb listings, NYC' },
       { k: 'Metric', v: 'MAE (Mean Absolute Error)' },
     ],
-    methodLinks: [
-      { label: 'Notebook ↗', href: '#' },
-    ],
     visuals: [
       { label: 'Price distribution', alt: 'Price distribution histogram after filtering listings above $500, the right-skewed shape that motivated outlier removal before training', src: '/projects/airbnb-ml/price-distribution.webp' },
       { label: 'Correlation heatmap', alt: 'Feature correlation matrix across the numerical variables, with annotated coefficients showing how weakly price correlates with any single feature', src: '/projects/airbnb-ml/correlation-heatmap.webp' },
@@ -501,9 +503,6 @@ export const GRID_PROJECTS = [
       { k: 'Interface', v: '<span class="tk">Gradio</span>, interactive real-time classification prototype' },
       { k: 'Evaluation', v: 'Accuracy · Precision · Recall · F1 (macro avg) · Confusion matrix' },
     ],
-    methodLinks: [
-      { label: 'Notebook ↗', href: '#' },
-    ],
     visuals: [
       { label: 'Classification report', alt: 'Per-class precision, recall and F1 across the six categories, strong on ethnicity (0.97) and religion (0.95), notably weaker on the two ambiguous classes, at 0.81 overall accuracy on 9,539 samples', src: '/projects/cybershield/classification-report.webp' },
       { label: 'Confusion matrix', alt: 'Confusion matrix showing where the classifier actually fails, the bulk of the error is mutual confusion between not_cyberbullying and other_cyberbullying rather than across the targeted-harassment classes', src: '/projects/cybershield/confusion-matrix.webp' },
@@ -520,35 +519,35 @@ export const GRID_PROJECTS = [
     tier: 2,
     stack: ['Arduino C++', 'ESP8266', 'HC-SR04', 'Telegram Bot API'],
     desc: 'End-to-end IoT smart bin system deployed at a real stadium. Touchless servo lid, RGB LED fill-level indicators, and real-time Telegram notifications with debouncing and auto-reconnect. Built across two prototype iterations verified over 72 hours continuous operation.',
-    metric: '98% message delivery · ±2% fill accuracy · 72h continuous operation',
+    metric: '72h continuous operation · Deployed at PT Persita',
     problem: 'PT Persita\'s stadium had a problem familiar to every large venue: bins overflowing during events, manual inspection cycles that couldn\'t keep pace with crowd density, and no real-time visibility for facilities staff. SmartBin replaced guesswork with data.',
-    overview: 'A deployed IoT smart waste monitoring system built for PT Persita\'s stadium facility. Two-sensor architecture on an ESP8266 microcontroller: Sensor A monitors fill level in real time (0–100% from ultrasonic distance, 5-point rolling average for noise reduction), Sensor B triggers a touchless servo lid via hand-proximity detection. RGB LED status display (green/yellow/red by threshold). Real-time Telegram Bot notifications with 10-second debouncing, automatic WiFi reconnection, and 3-attempt message retry logic. Built across two full prototype iterations and piloted on a staffed campus reception desk before the venue install, so the unit was validated in continuous real-world use rather than bench conditions. Final system ran 72 hours continuously with 98% message delivery.',
+    overview: 'A deployed IoT smart waste monitoring system built for PT Persita\'s stadium facility. Two-sensor architecture on an ESP8266 microcontroller: Sensor A monitors fill level in real time (0–100% from ultrasonic distance, 5-point rolling average for noise reduction), Sensor B triggers a touchless servo lid via hand-proximity detection. RGB LED status display (green/yellow/red by threshold). Real-time Telegram Bot notifications with 10-second debouncing, automatic WiFi reconnection, and 3-attempt message retry logic. Built across two full prototype iterations and piloted on a staffed campus reception desk before the venue install, so the unit was validated in continuous real-world use rather than bench conditions. Final system ran 72 hours continuously.',
     myRole: {
       title: 'IoT Systems Developer',
       bullets: [
         'Designed the complete hardware architecture (ESP8266 microcontroller, dual HC-SR04 ultrasonic sensors, servo motor, RGB LED array) and produced the full circuit and pin configuration documentation',
         'Wrote all firmware in Arduino C++ including fill-level monitoring, touchless lid automation, Telegram Bot cloud integration, and automatic WiFi reconnection logic',
-        'Conducted two full prototype iterations with 3 real users in the live stadium environment, collecting structured feedback and implementing targeted fixes, moving from unstable initial prototype to 99%+ reliability in the final build',
+        'Conducted two full prototype iterations with 3 real users in the live stadium environment, collecting structured feedback and implementing targeted fixes, moving from an unstable initial prototype to a final build that ran 72 hours continuously',
       ],
       decisions: [
-        'Implemented a 5-point rolling average on Sensor A readings to eliminate noise from angle variation and bin shape; this single change moved fill-level accuracy from unstable to ±2%',
+        'Implemented a 5-point rolling average on Sensor A readings to reduce noise from angle variation and bin shape; this single change turned an unstable fill-level reading into a steady one',
         'Added 10-second debouncing on Telegram notifications after initial testing revealed message spam from sensor fluctuations was frustrating users and eroding trust in the system',
       ],
     },
     whatBuilt: [
       'Fill level monitoring: ultrasonic distance → percentage conversion, 5-point rolling average, 3-state RGB LED (green ≤49%, yellow 50–79%, red ≥80%)',
-      'Touchless lid automation: proximity detection via Sensor B, servo motor 0°–180°, <500ms response, non-blocking millis() timing',
+      'Touchless lid automation: proximity detection via Sensor B, servo motor 0°–180°, non-blocking millis() timing',
       'Telegram Bot alerting: real-time push notifications on state change, 10-second debounce, 3-attempt retry, WiFi status included in message',
       'Reliability systems: automatic WiFi reconnection every 30 seconds, graceful degradation, error logging',
     ],
-    outcome: '98% Telegram delivery rate · ±2% fill accuracy · <500ms lid response · 72-hour uptime · Campus pilot, then deployment at PT Persita stadium',
+    outcome: '72 hours of continuous operation · Campus pilot, then deployment at PT Persita stadium',
     manifestRows: [
       { k: 'MCU', v: '<span class="tk">ESP8266</span> (NodeMCU)' },
       { k: 'Sensors', v: '<span class="tk">HC-SR04</span> ultrasonic (×2) · Servo motor · RGB LEDs' },
       { k: 'Firmware', v: '<span class="tk">Arduino C++</span> · millis() non-blocking · 5-point rolling average' },
       { k: 'Cloud', v: '<span class="tk">Telegram Bot API</span> · WiFiClientSecure · UniversalTelegramBot' },
       { k: 'Testing', v: '72-hour continuous deployment · 3 real users · 2 iterations' },
-      { k: 'Outcome', v: '98% delivery rate · ±2% accuracy · &lt;500ms response · Real deployment' },
+      { k: 'Outcome', v: '72h continuous operation · Deployed at PT Persita' },
     ],
     visuals: [
       { label: 'Hardware assembly', alt: 'The build as assembled: ESP8266 NodeMCU and HC-SR04 ultrasonic sensors wired on a breadboard beside the bin, and the servo and wiring mounted inside the lid', src: '/projects/smartbin/hardware-setup.webp' },
@@ -586,3 +585,5 @@ export const GRID_PROJECTS = [
     ],
   },
 ]
+
+export const ALL_PROJECTS = [...PROJECTS, ...GRID_PROJECTS]

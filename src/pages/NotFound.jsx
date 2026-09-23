@@ -3,12 +3,13 @@ import Cursor from '../components/Cursor'
 import Nav from '../components/Nav'
 import { PROJECT_LINKS } from '../navLinks'
 import { useDocumentMeta } from '../hooks'
+import { notFoundMeta } from '../seo'
 
 /* Reached two ways: an unknown /project/:slug, and the catch-all route. Without
    the catch-all a typo'd URL rendered nothing at all, because the host rewrites
    every path to index.html and React then matched no route. */
 export default function NotFound({ what = 'Page' }) {
-  useDocumentMeta(`${what} not found`)
+  useDocumentMeta(notFoundMeta(what))
 
   return (
     <>

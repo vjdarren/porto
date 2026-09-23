@@ -6,7 +6,6 @@ export default function ExperienceSection() {
       <div className="sechead grid12">
         <span className="idx rv">[ 02 ]</span>
         <h2 className="ttl rv d1">Experience</h2>
-        <span className="ct rv d1">{EXPERIENCE.length} roles</span>
       </div>
 
       {EXPERIENCE.map((e, i) => (

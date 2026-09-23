@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { HOME_META } from './seo'
 
 export function useReveal() {
   useEffect(() => {
@@ -34,31 +35,17 @@ export function useReveal() {
   }, [])
 }
 
-/* The shell is a single static index.html, so every route inherits the home
-   page's <title> and description unless a page claims its own. Case studies are
-   the links that actually get shared, so they are the ones that need it. */
-const BASE_TITLE = 'Valentinus · Computing Graduate · Product & Technology'
-const BASE_DESC =
-  'Portfolio of Valentinus, computing graduate and software developer bridging system architecture, user experience, and strategic design.'
-
-export function useDocumentMeta(title, description) {
+/* Title and description for client-side navigation. Crawlers get the same
+   values from the prerendered HTML; both come from seo.js. */
+export function useDocumentMeta({ title, description }) {
   useEffect(() => {
-    document.title = title ? `${title} · Valentinus` : BASE_TITLE
-
+    document.title = title
     const tag = document.querySelector('meta[name="description"]')
-    if (tag) {
-      const d = description ? description.trim() : ''
-      /* Search engines cut the snippet around 160 characters; trim on a word
-         boundary so the tag never ends mid-word. */
-      tag.setAttribute(
-        'content',
-        d.length > 160 ? `${d.slice(0, 157).replace(/\s+\S*$/, '')}…` : d || BASE_DESC
-      )
-    }
+    tag?.setAttribute('content', description)
 
     return () => {
-      document.title = BASE_TITLE
-      if (tag) tag.setAttribute('content', BASE_DESC)
+      document.title = HOME_META.title
+      tag?.setAttribute('content', HOME_META.description)
     }
   }, [title, description])
 }

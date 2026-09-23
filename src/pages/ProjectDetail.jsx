@@ -7,6 +7,7 @@ import Nav from '../components/Nav'
 import NotFound from './NotFound'
 import { PROJECT_LINKS } from '../navLinks'
 import { useReveal, useDocumentMeta } from '../hooks'
+import { projectMeta, notFoundMeta } from '../seo'
 import Visuals from '../components/Visuals'
 
 export default function ProjectDetail() {
@@ -25,10 +26,7 @@ export default function ProjectDetail() {
      flushes child effects before the parent's, so NotFound's own title would be
      overwritten by this one : own the miss case here rather than fight it. */
   const found = project || gridProject
-  useDocumentMeta(
-    found ? found.name : 'Project not found',
-    project ? project.context.desc : gridProject ? gridProject.desc : undefined
-  )
+  useDocumentMeta(found ? projectMeta(found) : notFoundMeta('Project'))
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -121,17 +119,19 @@ export default function ProjectDetail() {
               </div>
             </div>
 
-            <div className="layer grid12">
-              <div className="lhead rv">
-                <span className="step"><span className="b"></span> What I Built</span>
-                <h2>Deliverables shipped</h2>
+            {g.whatBuilt && g.whatBuilt.length > 0 && (
+              <div className="layer grid12">
+                <div className="lhead rv">
+                  <span className="step"><span className="b"></span> What I Built</span>
+                  <h2>Deliverables shipped</h2>
+                </div>
+                <div className="lbody rv d1">
+                  <ul className="role-list">
+                    {g.whatBuilt.map((b, i) => <li key={i}>{b}</li>)}
+                  </ul>
+                </div>
               </div>
-              <div className="lbody rv d1">
-                <ul className="role-list">
-                  {g.whatBuilt.map((b, i) => <li key={i}>{b}</li>)}
-                </ul>
-              </div>
-            </div>
+            )}
 
             {g.visuals && g.visuals.length > 0 && (
               <div className="layer visuals grid12">
